@@ -1,0 +1,32 @@
+.TH OPENTELEMETRY-DOTNET 1 "@DATE@" "opentelemetry-dotnet-autoinstrumentation @VERSION@" "User Commands"
+.SH NAME
+opentelemetry-dotnet \- OpenTelemetry .NET Auto-Instrumentation Agent
+.SH DESCRIPTION
+The OpenTelemetry .NET Auto-Instrumentation Agent automatically instruments
+.NET applications to collect distributed traces, metrics, and logs.
+.PP
+When installed alongside
+.BR opentelemetry-injector (8),
+.NET applications are automatically instrumented without code changes.
+.SH CONFIGURATION
+.TP
+.I /etc/opentelemetry/dotnet/otel-config.yaml
+Default configuration file for the .NET agent.
+.TP
+.I /etc/opentelemetry/injector/conf.d/dotnet.conf
+Drop-in configuration that registers the .NET agent with the injector.
+.SH FILES
+.TP
+.I /usr/lib/opentelemetry/dotnet/
+.NET agent installation directory (contains glibc and musl variants).
+.SH ENVIRONMENT
+.TP
+.B OTEL_SERVICE_NAME
+Service name for telemetry data.
+.TP
+.B OTEL_EXPORTER_OTLP_ENDPOINT
+OTLP endpoint (default: http://localhost:4317).
+.SH SEE ALSO
+.BR opentelemetry-injector (8)
+.PP
+https://opentelemetry.io/docs/zero-code/net/

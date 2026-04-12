@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: opentelemetry-dotnet-instrumentation
+Upstream-Contact: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation/issues
+Source: https://github.com/open-telemetry/opentelemetry-dotnet-instrumentation
+
+Files: *
+Copyright: The OpenTelemetry Authors
+License: Apache-2.0

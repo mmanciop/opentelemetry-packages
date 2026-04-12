@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: opentelemetry-injector
+Upstream-Contact: https://github.com/open-telemetry/opentelemetry-injector/issues
+Source: https://github.com/open-telemetry/opentelemetry-injector
+
+Files: *
+Copyright: The OpenTelemetry Authors
+License: Apache-2.0

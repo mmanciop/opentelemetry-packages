@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: opentelemetry-js-contrib
+Upstream-Contact: https://github.com/open-telemetry/opentelemetry-js-contrib/issues
+Source: https://github.com/open-telemetry/opentelemetry-js-contrib
+
+Files: *
+Copyright: The OpenTelemetry Authors
+License: Apache-2.0

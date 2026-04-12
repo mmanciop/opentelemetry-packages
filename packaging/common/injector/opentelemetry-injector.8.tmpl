@@ -1,0 +1,29 @@
+.TH OPENTELEMETRY-INJECTOR 8 "@DATE@" "opentelemetry-injector @VERSION@" "System Administration"
+.SH NAME
+opentelemetry-injector \- LD_PRELOAD-based automatic instrumentation injector
+.SH DESCRIPTION
+The OpenTelemetry Injector is a shared library that, when loaded via
+.BR ld.so.preload (5),
+automatically instruments applications running on the system.
+.PP
+It detects the runtime environment (Java, Node.js, .NET) of each process
+and injects the appropriate OpenTelemetry auto-instrumentation agent.
+.SH CONFIGURATION
+.TP
+.I /etc/opentelemetry/injector/otelinject.conf
+Main configuration file for the injector.
+.TP
+.I /etc/opentelemetry/injector/conf.d/
+Drop-in directory for agent path configurations. Each language agent package
+installs a fragment here.
+.TP
+.I /etc/opentelemetry/injector/default_env.conf
+Default environment variables applied to all instrumented processes.
+.SH FILES
+.TP
+.I /usr/lib/opentelemetry/injector/libotelinject.so
+The injector shared library.
+.SH SEE ALSO
+.BR ld.so.preload (5)
+.PP
+https://opentelemetry.io/docs/

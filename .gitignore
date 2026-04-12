@@ -1,0 +1,20 @@
+# Build output
+build/
+dist/
+
+# FPM temp files
+*.deb
+*.rpm
+
+# OS files
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Go tools
+.tools/
