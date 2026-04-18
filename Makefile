@@ -137,14 +137,50 @@ packages: deb-packages rpm-packages
 # ============================================================================
 # Packaging Integration Tests
 # ============================================================================
+# Parameterized: make integration-test FORMAT=deb DISTRO=debian-12 LANG=java
+# Or use the convenience targets below.
 
+FORMAT ?= deb
+DISTRO ?= debian-12
+LANG ?= java
+
+DEB_DISTROS := debian-11 debian-12 ubuntu-22.04 ubuntu-24.04
+RPM_DISTROS := fedora-41 ubi-8 ubi-9
+LANGS := java nodejs dotnet
+
+.PHONY: integration-test
+integration-test:
+	ARCH=$(ARCH) packaging/tests/$(FORMAT)/run.sh $(DISTRO) $(LANG)
+
+.PHONY: integration-tests-deb
+integration-tests-deb: deb-packages
+	@for distro in $(DEB_DISTROS); do \
+	  for lang in $(LANGS); do \
+	    echo "=== Testing deb/$$distro/$$lang/$(ARCH) ==="; \
+	    ARCH=$(ARCH) packaging/tests/deb/run.sh $$distro $$lang || exit 1; \
+	  done; \
+	done
+
+.PHONY: integration-tests-rpm
+integration-tests-rpm: rpm-packages
+	@for distro in $(RPM_DISTROS); do \
+	  for lang in $(LANGS); do \
+	    echo "=== Testing rpm/$$distro/$$lang/$(ARCH) ==="; \
+	    ARCH=$(ARCH) packaging/tests/rpm/run.sh $$distro $$lang || exit 1; \
+	  done; \
+	done
+
+.PHONY: integration-tests-all
+integration-tests-all: integration-tests-deb integration-tests-rpm
+
+# Legacy targets for backwards compatibility with CI
 .PHONY: packaging-integration-test-deb-%
 packaging-integration-test-deb-%: deb-packages
-	(cd packaging/tests/deb/$* && ARCH=$(ARCH) ./run.sh)
+	ARCH=$(ARCH) packaging/tests/deb/run.sh $(DISTRO) $*
 
 .PHONY: packaging-integration-test-rpm-%
 packaging-integration-test-rpm-%: rpm-packages
-	(cd packaging/tests/rpm/$* && ARCH=$(ARCH) ./run.sh)
+	ARCH=$(ARCH) packaging/tests/rpm/run.sh $(DISTRO) $*
 
 # ============================================================================
 # Local Package Repositories for Testing

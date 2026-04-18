@@ -16,12 +16,11 @@ ARG RPM_ARCH=x86_64
 ENV LANG=C.UTF-8
 
 RUN dnf -y update && \
-    dnf -y install wget dotnet-sdk-9.0 dotnet-runtime-9.0 && \
+    dnf -y install wget dotnet-runtime-9.0 && \
     dnf clean all
 
-# TODO The otel collector version needs to be kept up to date, potentially with renovate.
-RUN wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.128.0/otelcol-contrib_0.128.0_linux_${ARCH}.rpm
-RUN rpm -i otelcol-contrib_0.128.0_linux_${ARCH}.rpm
+ADD https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.128.0/otelcol-contrib_0.128.0_linux_${ARCH}.rpm otelcol-contrib.rpm
+RUN rpm -i otelcol-contrib.rpm
 
 COPY build/packages/opentelemetry-injector-*-1.${RPM_ARCH}.rpm injector.rpm
 COPY build/packages/opentelemetry-dotnet-autoinstrumentation-*-1.${RPM_ARCH}.rpm dotnet-agent.rpm

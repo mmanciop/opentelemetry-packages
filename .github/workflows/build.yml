@@ -90,10 +90,25 @@ jobs:
   packaging-integration-tests:
     needs: build-package
     strategy:
+      fail-fast: false
       matrix:
-        SYS_PACKAGE: [ "deb", "rpm" ]
         lang: [ "java", "nodejs", "dotnet" ]
         arch: [ "amd64", "arm64" ]
+        distro:
+          - name: debian-11
+            format: deb
+          - name: debian-12
+            format: deb
+          - name: ubuntu-22.04
+            format: deb
+          - name: ubuntu-24.04
+            format: deb
+          - name: fedora-41
+            format: rpm
+          - name: ubi-8
+            format: rpm
+          - name: ubi-9
+            format: rpm
         exclude:
           - lang: "dotnet"
             arch: "arm64"
@@ -104,20 +119,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download binary
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-        with:
-          name: libotelinject-${{ matrix.arch }}
-          path: ./dist
-
       - name: Download packages
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
-          name: opentelemetry-packages-${{ matrix.arch }}-${{ matrix.SYS_PACKAGE }}
+          name: opentelemetry-packages-${{ matrix.arch }}-${{ matrix.distro.format }}
           path: ./build/packages
 
-      - name: Run packaging integration tests for ${{ matrix.SYS_PACKAGE }}/${{ matrix.lang }}/${{ matrix.arch }}
-        run: make packaging-integration-test-${{ matrix.SYS_PACKAGE }}-${{ matrix.lang }} ARCH=${{ matrix.arch }}
+      - name: Run integration test (${{ matrix.distro.name }}/${{ matrix.lang }}/${{ matrix.arch }})
+        run: |
+          make integration-test \
+            FORMAT=${{ matrix.distro.format }} \
+            DISTRO=${{ matrix.distro.name }} \
+            LANG=${{ matrix.lang }} \
+            ARCH=${{ matrix.arch }}
 
   publish-stable:
     runs-on: ubuntu-24.04
